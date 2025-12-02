@@ -2,6 +2,7 @@ fastapi
 uvicorn
 os
 dotenv
-sqlalchemy
 sqlalchemy[asyncio]
 asyncpg
+pydantic
+typing
