@@ -6,22 +6,18 @@ from app.db.session import get_session
 from app.db.crud.books import create_book, get_book, get_books, update_book, delete_book
 from app.db.crud.reviews import get_rating_stats
 from app.schemas.book import BookCreate, BookUpdate, BookOut
+from app.core.permissions import require_admin
 
 
 router = APIRouter(tags=["books"])
-
-
-def _placeholder_auth_user():
-    pass
-
 
 @router.post("/books", response_model=BookOut, status_code=status.HTTP_201_CREATED)
 async def add_book(
     payload: BookCreate,
     session: AsyncSession = Depends(get_session),
-    current_user = Depends(_placeholder_auth_user)
+    current_user = Depends(require_admin)
 ):
-    # Add RBAC here
+    # Only admin can create books
     book = await create_book(session, payload)
     return book
 
@@ -44,9 +40,9 @@ async def update_book_by_id(
     book_id: int,
     payload: BookUpdate, 
     session: AsyncSession = Depends(get_session),
-    current_user = Depends(_placeholder_auth_user)
+    current_user = Depends(require_admin)
 ):
-    # RBAC code fill here
+    # Only Admin can update books
     updated = await update_book(session, book_id, payload)
     if not updated:
         raise HTTPException(status_code=404, detail="Book not found")
@@ -57,9 +53,9 @@ async def update_book_by_id(
 async def book_delete(
     book_id: int, 
     session: AsyncSession = Depends(get_session), 
-    current_user = Depends(_placeholder_auth_user)
+    current_user = Depends(require_admin)
 ):
-    # RBAC code here
+    # Only admin can delete books
     ok = await delete_book(session, book_id)
     if not ok:
         raise HTTPException(status_code=404, detail="Book not found")
