@@ -21,3 +21,4 @@ argon2-cffi
 # --- Other modules ----
 datetime
 typing
+httpx
