@@ -9,11 +9,14 @@ class Settings():
     JWT_SECRET: str = os.getenv("JWT_SECRET")
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
+    OLLAMA_URL: str = os.getenv("OLLAMA_URL")
 
     if not DATABASE_URL:
         raise ValueError("DATABASE_URL is not present in environment variable.")
     if not JWT_SECRET:
         raise ValueError("JWT_SECRET is not present in environment variable.")
+    if not OLLAMA_URL:
+        raise ValueError("OLLAMA_URL is not present in environment variable.")
 
 
 settings = Settings()

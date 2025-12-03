@@ -8,8 +8,10 @@ from app.schemas.book import BookCreate, BookUpdate
 
 
 # Creating a book
-async def create_book(session: AsyncSession, book_in: BookCreate) -> Book:
-    new_book = Book(**book_in.dict())
+async def create_book(session: AsyncSession, book_in: BookCreate, summary: str | None = None) -> Book:
+    data = book_in.dict()
+    data["summary"] = summary
+    new_book = Book(**data)
     session.add(new_book)
     await session.commit()
     await session.refresh(new_book)

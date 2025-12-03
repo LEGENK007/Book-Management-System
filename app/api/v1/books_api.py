@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Body
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.session import get_session
@@ -7,6 +7,7 @@ from app.db.crud.books import create_book, get_book, get_books, update_book, del
 from app.db.crud.reviews import get_rating_stats
 from app.schemas.book import BookCreate, BookUpdate, BookOut
 from app.core.permissions import require_admin
+from app.services.ai_service import generate_summary
 
 
 router = APIRouter(tags=["books"])
@@ -18,7 +19,9 @@ async def add_book(
     current_user = Depends(require_admin)
 ):
     # Only admin can create books
-    book = await create_book(session, payload)
+    content = f"Title: {payload.title}\n Author: {payload.author}\n Genre: {payload.genre}"
+    summary = await generate_summary(content, kind="book")
+    book = await create_book(session, payload, summary)
     return book
 
 @router.get("/books", response_model=List[BookOut])
@@ -78,3 +81,11 @@ async def get_book_summary(book_id: int, session: AsyncSession = Depends(get_ses
         "rating": stats["average rating"], 
         "review_count": stats["review count"], 
     }
+
+
+@router.post("/books/generate-summary")
+async def generate_summary_endpoint(
+    content: str = Body(..., embed=True)
+):
+    summary = await generate_summary(content, kind="book")
+    return {"summary": summary}

@@ -7,6 +7,7 @@ from app.db.crud.reviews import get_reviews, create_review
 from app.db.crud.books import get_book as _get_book
 from app.schemas.review import ReviewCreate, ReviewOut
 from app.core.permissions import require_authenticated
+from app.services.ai_service import generate_summary
 
 router = APIRouter(prefix="/books", tags=["reviews"])
 
@@ -34,3 +35,12 @@ async def fetch_reviews(book_id: int, session: AsyncSession = Depends(get_sessio
     return reviews
 
 
+@router.get("/books/{book_id}/reviews/summary")
+async def summarize_reviews(book_id: int, session: AsyncSession = Depends(get_session)):
+    reviews = await get_reviews(session, book_id)
+    if not reviews:
+        return {"summary": "No reviews yet"}
+    
+    combined = "\n".join(r.review_text for r in reviews)
+    summary = await generate_summary(combined, kind="reviews")
+    return {"summary": summary}
