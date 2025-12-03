@@ -4,7 +4,7 @@ from typing import Optional, List
 
 from app.models.models import Review
 from app.schemas.review import ReviewCreate
-from app.crud.books import get_book
+from app.db.crud.books import get_book
 
 
 # Add a review

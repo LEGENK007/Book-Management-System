@@ -1,7 +1,7 @@
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException, Depends, status
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import BaseModel
 
@@ -33,8 +33,8 @@ async def register(user_in: UserCreate, session: AsyncSession = Depends(get_sess
 
 
 @router.post("/auth/login", response_model=Token)
-async def login(payload: LoginIn, session: AsyncSession = Depends(get_session)):
-    user = await get_user_by_email(session, payload.email)
+async def login(payload: OAuth2PasswordRequestForm = Depends(), session: AsyncSession = Depends(get_session)):
+    user = await get_user_by_email(session, payload.username)
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
     if not verify_password(payload.password, user.password_hash):
@@ -73,7 +73,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme), session: AsyncSe
     except Exception:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token subject")
     
-    user = await session.get(__import__("app.models.models", fromList=["User"].User, user_id))
+    user = await session.get(__import__("app.models.models", fromlist=["User"]).User, user_id)
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
     

@@ -52,7 +52,7 @@ async def update_book_by_id(
     return updated
 
 
-@router.delete("/books/{book_id}", status_code=HTTP_204_NO_CONTENT)
+@router.delete("/books/{book_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def book_delete(
     book_id: int, 
     session: AsyncSession = Depends(get_session), 

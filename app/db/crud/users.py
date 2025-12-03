@@ -17,7 +17,7 @@ async def get_user_by_email(session: AsyncSession, email: str) -> Optional[User]
 async def create_user(session: AsyncSession, user_in: UserCreate, password_hash: str) -> User:
     new_user = User(
         email = user_in.email,
-        password = password_hash,
+        password_hash = password_hash,
         role = user_in.role,
     )
     session.add(new_user)

@@ -22,3 +22,5 @@ argon2-cffi
 datetime
 typing
 httpx
+pytest
+asyncio

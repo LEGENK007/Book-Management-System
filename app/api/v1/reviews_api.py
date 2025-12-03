@@ -25,7 +25,7 @@ async def add_review_for_book(
     if not book:
         raise HTTPException(status_code=404, detail="Book not found")
     
-    review = create_review(session, book_id, payload)
+    review = await create_review(session, book_id, payload)
     return review
 
 

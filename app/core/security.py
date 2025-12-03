@@ -14,9 +14,9 @@ pwd_context = CryptContext(
     schemes = ["argon2", "bcrypt"],
     default = "argon2", 
     # Argon2 parameters
-    argon2_time_cost = 2,            # Number of Iterations
-    argon2_memory_cost = 102400,     # in KiB -> 100MiB
-    argon2_parallelism = 4,
+    argon2__time_cost = 2,            # Number of Iterations
+    argon2__memory_cost = 102400,     # in KiB -> 100MiB
+    argon2__parallelism = 4,
 )
 
 def get_password_hash(password: str) -> str:
