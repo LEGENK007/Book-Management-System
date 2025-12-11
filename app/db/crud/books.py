@@ -9,7 +9,7 @@ from app.schemas.book import BookCreate, BookUpdate
 
 # Creating a book
 async def create_book(session: AsyncSession, book_in: BookCreate, summary: str | None = None) -> Book:
-    data = book_in.dict()
+    data = book_in.model_dump()
     data["summary"] = summary
     new_book = Book(**data)
     session.add(new_book)

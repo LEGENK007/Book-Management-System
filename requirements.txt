@@ -1,26 +1,17 @@
-# ---- Core framework ----
-fastapi
-uvicorn
+fastapi==0.121.1
+uvicorn[standard]==0.38.0
 
-# ---- Settings and Utilities ----
-os
-python-dotenv
-pydantic
-pydantic-core 
+python-dotenv==1.2.1
+pydantic==2.12.4
 
-# ---- Database + ORM ----
-sqlalchemy
-asyncpg
+sqlalchemy==2.0.44
+asyncpg==0.31.0
 
-# ---- Security & Auth ----
-pyjwt
-python-jose
-passlib
-argon2-cffi
+pyjwt==2.10.1
+passlib[bcrypt]==1.7.4
+argon2-cffi==25.1.0
 
-# --- Other modules ----
-datetime
-typing
-httpx
-pytest
-asyncio
+httpx==0.28.1
+
+pytest==9.0.1
+pytest-asyncio==1.3.0

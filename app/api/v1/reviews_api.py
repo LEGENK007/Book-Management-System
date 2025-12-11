@@ -12,7 +12,7 @@ from app.services.ai_service import generate_summary
 router = APIRouter(prefix="/books", tags=["reviews"])
 
 
-@router.post("/books/{book_id}/reviews", response_model=ReviewOut, status_code=status.HTTP_201_CREATED)
+@router.post("/{book_id}/reviews", response_model=ReviewOut, status_code=status.HTTP_201_CREATED)
 async def add_review_for_book(
     book_id: int,
     payload: ReviewCreate,
@@ -29,13 +29,13 @@ async def add_review_for_book(
     return review
 
 
-@router.get("/books/{book_id}/reviews", response_model=List[ReviewOut])
+@router.get("/{book_id}/reviews", response_model=List[ReviewOut])
 async def fetch_reviews(book_id: int, session: AsyncSession = Depends(get_session)):
     reviews = await get_reviews(session, book_id)
     return reviews
 
 
-@router.get("/books/{book_id}/reviews/summary")
+@router.get("/{book_id}/reviews/summary")
 async def summarize_reviews(book_id: int, session: AsyncSession = Depends(get_session)):
     reviews = await get_reviews(session, book_id)
     if not reviews:

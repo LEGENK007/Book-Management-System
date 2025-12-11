@@ -9,7 +9,13 @@ async def generate_summary(content: str, kind: str = "book") -> str:
     async with httpx.AsyncClient() as client:
         resp = await client.post(
             f"{settings.OLLAMA_URL}/api/generate", 
-            json = {"model": "llama3", "prompt": prompt, "stream": False},
+            json = {
+                "model": settings.LLM_MODEL_NAME, 
+                "prompt": prompt, 
+                "stream": False, 
+                "max_tokens": settings.LLM_MAX_TOKENS,
+                "temperature": settings.LLM_TEMPERATURE, 
+            },
             timeout = 60.0
         )
 

@@ -7,7 +7,13 @@ from pydantic import BaseModel
 
 from app.db.session import get_session
 from app.db.crud.users import get_user_by_email, create_user
-from app.core.security import get_password_hash, verify_password, create_access_token, decode_access_token
+from app.core.security import (
+    get_password_hash, 
+    verify_password, 
+    create_access_token, 
+    decode_access_token,
+    needs_rehash,
+)
 from app.schemas.token import Token, TokenPayload
 from app.schemas.user import UserCreate, UserOut
 
